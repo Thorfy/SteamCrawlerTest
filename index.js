@@ -41,22 +41,7 @@ client.on('webSession', function(sessionID, cookies) {
 	//console.log(sessionID)
 	//console.log(cookies)
 
-	/*request({
-			headers:{
-				'Host': 'steamcommunity.com',
-				'Connection': 'keep-alive',
-				'Cache-Control': 'max-age=0',
-				'Upgrade-Insecure-Requests': 1,
-				'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.81 Safari/537.36',
-				'Accept': 'application/json,text/*;q=0.99',
-				'Cookie': cookies.join(';')
-			}, 
-			uri: 'https://steamcommunity.com/market/pricehistory/?country=US&currency=1&appid=730&market_hash_name=Glove%20Case%20Key',
-    		body: '',
-    		method: 'GET'
-  		}, function (err, res, body) {
-  			console.log(res)
-  		});*/
+	/* */
 	//Set the cookie instead of setting into heade
 });
 
