@@ -25,8 +25,8 @@ let db = new Database();
 
 let client = new SteamUser();
 client.logOn({	
-	"accountName": "thorfy3",
-	"password": "Xki0133e"
+	"accountName": "",
+	"password": ""
 });
 
 //db.query('SELECT * FROM `item`').then(response => console.log(response));
