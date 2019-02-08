@@ -5,8 +5,8 @@ const Database = require('./classes/db.js');
 
 let db = new Database();
 
-/* REFRESH ALL DB ITEM
-Item.getAllItems().then(res => { 
+ //REFRESH ALL DB ITEM
+/*Item.getAllItems().then(res => { 
 	if(res.success === true){
 		res.items.forEach(function(obj) {
 			try {
@@ -20,13 +20,13 @@ Item.getAllItems().then(res => {
 	}else{
 		console.log(res.message);
 	}
-});
-*/
+});*/
+
 
 let client = new SteamUser();
 client.logOn({	
-	"accountName": "",
-	"password": ""
+	"accountName": "thorfy3",
+	"password": "Xki0133e"
 });
 
 //db.query('SELECT * FROM `item`').then(response => console.log(response));
@@ -41,8 +41,33 @@ client.on('webSession', function(sessionID, cookies) {
 	//console.log(sessionID)
 	//console.log(cookies)
 
-	/* */
-	//Set the cookie instead of setting into heade
+	db.query('SELECT * FROM `item`').then(function(items){
+		let itemsArray = JSON.parse(JSON.stringify(items));
+		itemsArray.forEach(function(item){
+			if(item.market_hash_name){
+				try{
+					Item.getItemHistory(item.market_hash_name, cookies).then(res => { 
+						if(res.success === true){
+							let sqlrequest = "";
+							res.prices.forEach(function(arrayData) {
+								sqlrequest += `INSERT INTO history (id_item, date, price, volume) VALUES (${item.id_item}, "${arrayData[0]}", "${arrayData[1]}", "${arrayData[2]}");`;
+							});
+							try{
+								db.query(sqlrequest).then( result => console.log(`${item.market_hash_name} added in db`));
+							}catch(e){
+								console.log(e)
+							}
+						}else{
+							console.log(res.message);
+						}
+					});
+				}catch(e){
+					console.log(e);
+				}
+			}
+		})
+	});
+
 });
 
 
