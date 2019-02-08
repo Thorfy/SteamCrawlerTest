@@ -47,16 +47,13 @@ let db = new Database();
 		asyncForEach(items, async (item) => {
 			let res = await Item.getItemHistory(item.market_hash_name, cookies);
 			if(res.success === true){
-				let sqlrequest = "";
-				res.prices.forEach(function(arrayData) {
-					sqlrequest += `INSERT INTO \`history\` (id_item, date, price, volume) VALUES (${item.id_item}, '${moment(arrayData[0]).format('L')}', ${arrayData[1]}, '${arrayData[2]}');`;
+				let bigInsert = "";
+				res.prices.forEach(async function(arrayData) {
+					let sqlInput = `INSERT INTO \`history\` (id_item, date, price, volume) VALUES (${item.id_item}, '${arrayData[0]}', ${parseFloat(arrayData[1])}, '${arrayData[2]}');`;					
+					let resDB = await db.query(sqlInput);	
+					//console.log(`${await resDB}`);
 				});
-				
-				let resDB = await db.query(sqlrequest);
 				console.log(`${item.market_hash_name} added in db`);
-				console.log(`${resDB}`);
-					
-				
 			}else{
 				console.log(res);
 			}
