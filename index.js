@@ -39,32 +39,43 @@ let db = new Database();
 
  });
 
- client.on('webSession', function(sessionID, cookies) {
+ client.on('webSession', async function(sessionID, cookies) {
  	console.log("Client : Got web session");
 	//console.log(sessionID)
-	console.log(cookies)
+	//console.log(cookies)
+	let lastItem = await db.query('SELECT id_item FROM `history` ORDER BY id_item DESC LIMIT 1') 
+	console.log(lastItem);
+	if(lastItem.length != 0 && lastItem[0].id_item){
+		lastItem = lastItem[0].id_item
+	}else{
+		lastItem = 0
+	}
+	try{
+		db.query('SELECT * FROM `item` WHERE id_item > '+lastItem).then(function(items){
+			asyncForEach(items, async (item) => {
 
-	db.query('SELECT * FROM `item`').then(function(items){
-		asyncForEach(items, async (item) => {
+				await sleep(2000);
+				console.log(item.market_hash_name +' - requested')
 
-			await sleep(2000);
-			console.log(item.market_hash_name +' - requested'y)
-			let res = await Item.getItemHistory(item.market_hash_name, cookies);
-			
-			if(res.success === true){
-				let bigInsert = "";
-				res.prices.forEach(async function(arrayData) {
-					let sqlInput = `INSERT INTO \`history\` (id_item, date, price, volume) VALUES (${item.id_item}, '${arrayData[0]}', ${parseFloat(arrayData[1])}, '${arrayData[2]}');`;					
-					let resDB = await db.query(sqlInput);	
+				let res = await Item.getItemHistory(item.market_hash_name, cookies);
+
+				if(res.success === true){
+					let bigInsert = "";
+					res.prices.forEach(async function(arrayData) {
+						let sqlInput = `INSERT INTO \`history\` (id_item, date, price, volume) VALUES (${item.id_item}, '${arrayData[0]}', ${parseFloat(arrayData[1])}, '${arrayData[2]}');`;					
+						let resDB = await db.query(sqlInput);	
 					//console.log(`${await resDB}`);
 				});
-				console.log(`${item.market_hash_name} added in db`);
-			}else{
-				console.log(res);
-			}
+					console.log(`${item.market_hash_name} added in db`);
+				}else{
+					console.log(res.message);
+				}
 
-		})
-	});
+			})
+		});
+	}catch(e){
+		process.exit(e)
+	}
 });
 
 
@@ -74,5 +85,5 @@ let db = new Database();
  	}
  }
  function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
+ 	return new Promise(resolve => setTimeout(resolve, ms));
+ }

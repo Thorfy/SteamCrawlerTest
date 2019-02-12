@@ -16,7 +16,7 @@ class Item {
     }
     static getItemHistory(market_hash_name, cookies) {
         return new Promise(( resolve, reject ) => {
-         request({
+           request({
             headers:{
                 'Host': 'steamcommunity.com',
                 'Connection': 'keep-alive',
@@ -33,9 +33,15 @@ class Item {
             if(err){
                 return reject(err);
             }
-            return resolve(JSON.parse(body));
+            try{
+                let jsonbody = JSON.parse(body)
+                resolve(jsonbody)
+            }catch(e){
+                resolve("{'success':false, 'message':'We can't retrieve date for "+encodeURIComponent(market_hash_name)+"}")
+            }
+            
         }); 
-     });
+       });
     }
 }
 
