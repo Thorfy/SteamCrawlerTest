@@ -45,7 +45,11 @@ let db = new Database();
 
 	db.query('SELECT * FROM `item`').then(function(items){
 		asyncForEach(items, async (item) => {
+			let pause = await setTimeout(function(){ console.log(item.market_hash_name + ' - request'); }, 1500);
 			let res = await Item.getItemHistory(item.market_hash_name, cookies);
+			
+
+			}
 			if(res.success === true){
 				let bigInsert = "";
 				res.prices.forEach(async function(arrayData) {

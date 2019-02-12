@@ -1,11 +1,13 @@
 const mysql = require('mysql');
+const config = require('./config.js');
+
 class Database {
     constructor() {
         this.connection = mysql.createConnection({
-            host: "localhost",
-            user: "root",
-            password: "",
-            database: "steamcrawler"
+            host: config.dbHost,
+            user: config.dbUsername,
+            password: config.dbPassWord,
+            database: config.dbName
         });
     }
     

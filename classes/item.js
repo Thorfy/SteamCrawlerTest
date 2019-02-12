@@ -15,7 +15,6 @@ class Item {
         });
     }
     static getItemHistory(market_hash_name, cookies) {
-        console.log(market_hash_name);
         return new Promise(( resolve, reject ) => {
          request({
             headers:{
