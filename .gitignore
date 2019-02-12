@@ -58,6 +58,6 @@ typings/
 .env
 
 # config variable file
-config.js 
+
 # next.js build output
 .next
