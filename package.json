@@ -9,10 +9,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cli-progress": "^2.1.1",
     "moment": "^2.24.0",
     "mysql": "^2.16.0",
+    "progress": "^2.0.3",
     "request": "^2.88.0",
-    "steam-user": "^4.1.0",
-    "steamcommunity": "^3.38.0"
+    "steam-user": "^4.4.4",
+    "steamcommunity": "^3.39.0"
   }
 }
