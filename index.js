@@ -54,37 +54,33 @@ client.on('webSession', function(sessionID, cookies) {
         } else {
             lastItem = 0
         }
-        try {
-            db.query('SELECT * FROM `item` WHERE id_item > ' + lastItem).then(async function(items) {
 
-                for (var i = 0, len = items.length; i < len; i++) {
-                    let item = items[i];
-                    console.log(item.market_hash_name + ' - requested')
+        db.query('SELECT * FROM `item` WHERE id_item > ' + lastItem).then(async function(items) {
 
-                    let res = await Item.getItemHistory(item.market_hash_name, cookies)
-                    if (res.success === true) {
-                        let bigInsert = "";
-                        bar1.start(res.prices.length, 0);
-                        for (var f = 0, len = res.prices.length; f < len; f++) {
-                        	if(res.prices[f]){
-                        		console.log(res.prices[f]);
+            for (var i = 0, len = items.length; i < len; i++) {
+                let item = items[i];
+                console.log(item.id_item + ' - ' + item.market_hash_name + ' - requested')
+
+                let res = await Item.getItemHistory(item.market_hash_name, cookies)
+                if (res.success === true) {
+                    let bigInsert = "";
+                    bar1.start(res.prices.length, 0);
+                    for (var f = 0, len = res.prices.length; f < len; f++) {
+                        if (res.prices[f]) {
                             let arrayData = res.prices[f];
                             let sqlInput = `INSERT INTO \`history\` (id_item, date, price, volume) VALUES (${item.id_item}, '${arrayData[0]}', ${parseFloat(arrayData[1])}, '${arrayData[2]}');`;
-                            let resDB = await db.query(sqlInput);
+                            await db.query(sqlInput);
                             bar1.increment();
-                          }
                         }
-                        bar1.stop();
-                        console.log(`${item.market_hash_name} added in db`);
-
-                    } else {
-                        console.log(res.message);
                     }
+                    bar1.stop();
+
+                } else {
+                    console.log(res.message);
                 }
-            });
-        } catch (e) {
-            process.exit(e)
-        }
+            }
+        });
+
     });
 
 });
