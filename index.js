@@ -66,10 +66,13 @@ client.on('webSession', function(sessionID, cookies) {
                         let bigInsert = "";
                         bar1.start(res.prices.length, 0);
                         for (var f = 0, len = res.prices.length; f < len; f++) {
-                            let arrayData = res.prices[i];
+                        	if(res.prices[f]){
+                        		console.log(res.prices[f]);
+                            let arrayData = res.prices[f];
                             let sqlInput = `INSERT INTO \`history\` (id_item, date, price, volume) VALUES (${item.id_item}, '${arrayData[0]}', ${parseFloat(arrayData[1])}, '${arrayData[2]}');`;
                             let resDB = await db.query(sqlInput);
                             bar1.increment();
+                          }
                         }
                         bar1.stop();
                         console.log(`${item.market_hash_name} added in db`);
