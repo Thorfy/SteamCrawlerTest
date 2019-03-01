@@ -69,6 +69,8 @@ client.on('webSession', function(sessionID, cookies) {
                     for (var f = 0, priceLen = res.prices.length; f < priceLen; f++) {
                         if (res.prices[f]) {
                             let arrayData = res.prices[f];
+                            //moment(new Date(arrayData[0])).format('L') WORKS PRETTY GOOD FOR MM/DD/YYYY
+
                             let sqlInput = `INSERT INTO \`history\` (id_item, date, price, volume) VALUES (${item.id_item}, '${arrayData[0]}', ${parseFloat(arrayData[1])}, '${arrayData[2]}');`;
                             let resDB = await db.query(sqlInput);
                             //console.log(resDB);
