@@ -14,19 +14,19 @@ let db = new Database();
 
 //REFRESH ALL DB ITEM
 // Item.getAllItems().then(res => {
-// 	if(res.success === true){
-// 		res.items.forEach(function(obj) {
-// 			try {
-// 				sqlrequest = `INSERT INTO item (market_name, market_hash_name, border_color, image) VALUES ("${obj.market_name}", "${obj.market_hash_name}", "${obj.name_color}", "https:${obj.icon_url}");`;
-// 				db.query(sqlrequest).then( result => console.log(result));
-// 			}catch(error){
-// 				console.error(error);
-// 			}
-// 		});
+//  if(res.success === true){
+//      res.items.forEach(function(obj) {
+//          try {
+//              sqlrequest = `INSERT INTO item (market_name, market_hash_name, border_color, image) VALUES ("${obj.market_name}", "${obj.market_hash_name}", "${obj.name_color}", "https:${obj.icon_url}");`;
+//              db.query(sqlrequest).then( result => console.log(result));
+//          }catch(error){
+//              console.error(error);
+//          }
+//      });
 
-// 	}else{
-// 		console.log(res.message);
-// 	}
+//  }else{
+//      console.log(res.message);
+//  }
 // });
 
 
@@ -66,11 +66,12 @@ client.on('webSession', function(sessionID, cookies) {
                 if (res.success === true) {
                     let bigInsert = "";
                     bar1.start(res.prices.length, 0);
+                    let sqlInput = 'INSERT INTO \`history\` (id_item, date, price, volume) VALUES ';
+
                     for (var f = 0, priceLen = res.prices.length; f < priceLen; f++) {
                         if (res.prices[f]) {
                             let arrayData = res.prices[f];
                             //moment(new Date(arrayData[0])).format('L') WORKS PRETTY GOOD FOR MM/DD/YYYY
-
                             let sqlInput = `INSERT INTO \`history\` (id_item, date, price, volume) VALUES (${item.id_item}, '${arrayData[0]}', ${parseFloat(arrayData[1])}, '${arrayData[2]}');`;
                             let resDB = await db.query(sqlInput);
                             //console.log(resDB);
@@ -78,13 +79,14 @@ client.on('webSession', function(sessionID, cookies) {
                         bar1.increment();
                     }
                     bar1.stop();
+
                 } else {
                     console.log('success = false');
                     console.log(res.message);
                 }
                 console.log('-----------------------------------------------------');
             }
-                console.log('Everything End');
+            console.log('Everything End');
 
         });
     });
