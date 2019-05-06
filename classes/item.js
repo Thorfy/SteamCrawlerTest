@@ -36,6 +36,7 @@ class Item {
                     reject(err);
                 }
                 try {
+                    console.log(body)
                     console.log('Try decode Item')
                     let jsonbody = JSON.parse(body)
                     resolve(jsonbody)
