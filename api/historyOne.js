@@ -31,9 +31,7 @@ function addInDB(cookies){
     //console.log(sessionID)
     //console.log(cookies)
     let dateDuJour = moment(new Date()).format('L');
-    console.log(dateDuJour)
     let selectOutdatedItems = 'SELECT * FROM `item` WHERE `dateMaj` != "' + dateDuJour + '" LIMIT 1'
-    console.log(selectOutdatedItems);
     db.query(selectOutdatedItems).then(async function(items) {
     	if(items.length >= 1){
     		let item = items[0];            
