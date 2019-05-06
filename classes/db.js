@@ -1,5 +1,7 @@
 const mysql = require('mysql');
 const config = require('../config.js');
+
+
 const db_config = {
     host: config.dbHost,
     user: config.dbUsername,
@@ -43,7 +45,7 @@ class Database {
             } // to avoid a hot loop, and to allow our node script to
         }); // process asynchronous requests in the meantime.
         // If you're also serving http, display a 503 error.
-       this.connection.on('error', function(err) {
+        this.connection.on('error', function(err) {
             console.log('db error', err);
             if (err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
                 this.handleDisconnect(); // lost due to either server restart, or a

@@ -4,17 +4,20 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "item": "node ./api/items.js",
+    "all": "node ./api/historyAll.js",
+    "one": "node ./api/historyOne.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cli-progress": "^2.1.1",
     "moment": "^2.24.0",
-    "mysql": "^2.16.0",
+    "mysql": "^2.17.1",
     "progress": "^2.0.3",
     "request": "^2.88.0",
-    "steam-user": "^4.4.4",
-    "steamcommunity": "^3.39.0"
+    "steam-user": "^4.8.0",
+    "steamcommunity": "^3.40.0"
   }
 }
