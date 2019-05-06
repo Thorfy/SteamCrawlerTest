@@ -23,15 +23,15 @@ client.on('webSession', function(sessionID, cookies) {
     addInDB(cookies)
     console.log("Client : Got web session");
 });
+
 function addInDB(cookies){
     //console.log(sessionID)
     //console.log(cookies)
     let dateDuJour = moment(new Date()).format('L');
     console.log(dateDuJour)
-    db.query('SELECT * FROM `item` WHERE `dateMaj` <> ' + dateDuJour + ' LIMIT 1').then(async function(items) {
+    db.query('SELECT * FROM `item` WHERE `dateMaj` != ' + dateDuJour + ' LIMIT 1').then(async function(items) {
         if(items.length >= 1){
             let item = items[0];            
-            console.log(item.id_item + ' - ' + item.market_hash_name + ' - requested');
             let res = await Item.getItemHistory(item.id_item, item.market_hash_name, cookies)
             if (res.success === true) {
                 let deleteDB = await db.query('DELETE FROM `history` WHERE id_item = '+item.id_item);
@@ -41,7 +41,6 @@ function addInDB(cookies){
                         let sqlInput = `INSERT INTO \`history\` (id_item, date, price, volume) VALUES (${item.id_item}, '${arrayData[0]}', ${parseFloat(arrayData[1])}, '${arrayData[2]}');`;
                         let resDB = await db.query(sqlInput);
                         let updateDate = await db.query("UPDATE `item` SET dateMaj = '"+dateDuJour+"' WHERE id_item = " + item.id_item);
-                        
                     }
                 }
             }
