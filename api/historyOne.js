@@ -39,6 +39,7 @@ function addInDB(cookies){
     		if (res.success === true) {
     			bar1.start(res.prices.length, 0);
     			let deleteFreshItemHistory = 'DELETE FROM `history` WHERE id_item = '+item.id_item; 
+    			let updateDate = await db.query("UPDATE `item` SET dateMaj = '"+dateDuJour+"' WHERE id_item = " + item.id_item);
     			let deleteDB = await db.query(deleteFreshItemHistory);
     			for (var f = 0, priceLen = res.prices.length; f < priceLen; f++) {
     				if (res.prices[f]) {
@@ -54,7 +55,6 @@ function addInDB(cookies){
     				}
     			}
     			bar1.stop();
-    			let updateDate = await db.query("UPDATE `item` SET dateMaj = '"+dateDuJour+"' WHERE id_item = " + item.id_item);
     			console.log('request done');
     			addInDB(cookies);
     		}
